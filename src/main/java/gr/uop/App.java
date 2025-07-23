@@ -191,6 +191,68 @@ public class App extends Application {
                 }
             }
 
+            closeMenuItem.setOnAction(event -> {
+                if (clickForSurname > 0 || clickName > 0) {
+
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+
+                    alert.setTitle("Close Confirmation");
+                    alert.setContentText("Do you want to save the changes?");
+                    alert.setHeaderText("The current record has changed");
+
+                    alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.YES) {
+                        if (clickForSurname > 0) {
+                            Person person = pb.getPerson(newValue.intValue());
+                            pb.setPersonData(newValue.intValue(), forSurname.getText(), person.getName(),
+                                    person.getAddress());
+                            String setSurname = forSurname.getText() + " " + person.getName() + " "
+                                    + person.getAddress();
+                            items.set(newValue.intValue(), setSurname);
+                        } else if (clickName > 0) {
+                            Person person = pb.getPerson(newValue.intValue());
+                            pb.setPersonData(newValue.intValue(), person.getSurname(), forName.getText(),
+                                    person.getAddress());
+                            String setName = person.getSurname() + " " + forName.getText() + " " +
+                                    person.getAddress();
+                            items.set(newValue.intValue(), setName);
+                        }
+                        pb.close();
+                        listOfPerson.getItems().clear();
+                        forSurname.setText("");
+                        forName.setText("");
+                        forHome.setText("");
+                        forSurname.setDisable(true);
+                        forName.setDisable(true);
+                        forHome.setDisable(true);
+                        edit.setDisable(true);
+                    } else if (result.get() == ButtonType.NO) {
+                        pb.close();
+                        listOfPerson.getItems().clear();
+                        if (clickForSurname > 0) {
+                            Person person = pb.getPerson(oldValue.intValue());
+                            pb.setPersonData(oldValue.intValue(), forSurname.getText(), person.getName(),
+                                    person.getAddress());
+                            String setSurname = forSurname.getText() + " " + person.getName() + " "
+                                    + person.getAddress();
+                            items.set(oldValue.intValue(), setSurname);
+                        } else if (clickName > 0) {
+                            Person person = pb.getPerson(oldValue.intValue());
+                            pb.setPersonData(oldValue.intValue(), person.getSurname(), forName.getText(),
+                                    person.getAddress());
+                            String setName = person.getSurname() + " " + forName.getText() + " " +
+                                    person.getAddress();
+                            items.set(oldValue.intValue(), setName);
+                        }
+                    } else if (result.get() == ButtonType.CANCEL) {
+
+                    }
+                    clickForSurname = 0;
+                    clickName = 0;
+                }
+            });
+
         });
 
         forSurname.textProperty().addListener((observable, oldValue, newValue) -> {
