@@ -202,61 +202,8 @@ public class App extends Application {
 
                     alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
                     Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() == ButtonType.YES) {
-                        if (clickForSurname > 0) {
-                            Person person = pb.getPerson(newValue.intValue());
-                            pb.setPersonData(newValue.intValue(), forSurname.getText(), person.getName(),
-                                    person.getAddress());
-                            String setSurname = forSurname.getText() + " " + person.getName() + " "
-                                    + person.getAddress();
-                            items.set(newValue.intValue(), setSurname);
-                        } else if (clickName > 0) {
-                            Person person = pb.getPerson(newValue.intValue());
-                            pb.setPersonData(newValue.intValue(), person.getSurname(), forName.getText(),
-                                    person.getAddress());
-                            String setName = person.getSurname() + " " + forName.getText() + " " +
-                                    person.getAddress();
-                            items.set(newValue.intValue(), setName);
-                        }
-                        pb.close();
-                        listOfPerson.getItems().clear();
-                        forSurname.setText("");
-                        forName.setText("");
-                        forHome.setText("");
-                        forSurname.setDisable(true);
-                        forName.setDisable(true);
-                        forHome.setDisable(true);
-                        edit.setDisable(true);
-                    } else if (result.get() == ButtonType.NO) {
-                        forSurname.setText("");
-                        forName.setText("");
-                        forHome.setText("");
-                        forSurname.setDisable(true);
-                        forName.setDisable(true);
-                        forHome.setDisable(true);
-                        edit.setDisable(true);
-                        pb.close();
-                        listOfPerson.getItems().clear();
-                        if (clickForSurname > 0) {
-                            Person person = pb.getPerson(oldValue.intValue());
-                            pb.setPersonData(oldValue.intValue(), forSurname.getText(), person.getName(),
-                                    person.getAddress());
-                            String setSurname = forSurname.getText() + " " + person.getName() + " "
-                                    + person.getAddress();
-                            items.set(oldValue.intValue(), setSurname);
-                        } else if (clickName > 0) {
-                            Person person = pb.getPerson(oldValue.intValue());
-                            pb.setPersonData(oldValue.intValue(), person.getSurname(), forName.getText(),
-                                    person.getAddress());
-                            String setName = person.getSurname() + " " + forName.getText() + " " +
-                                    person.getAddress();
-                            items.set(oldValue.intValue(), setName);
-                        }
-                    } else if (result.get() == ButtonType.CANCEL) {
-
-                    }
-                    clickForSurname = 0;
-                    clickName = 0;
+                    closeOrExit(clickForSurname, clickName, result, pb, listOfPerson, items,
+                            forSurname, forName, forHome, edit, oldValue, newValue);
                 }
             });
 
@@ -270,68 +217,8 @@ public class App extends Application {
 
                     alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
                     Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() == ButtonType.YES) {
-                        if (clickForSurname > 0) {
-                            Person person = pb.getPerson(newValue.intValue());
-                            pb.setPersonData(newValue.intValue(), forSurname.getText(), person.getName(),
-                                    person.getAddress());
-                            String setSurname = forSurname.getText() + " " + person.getName() + " "
-                                    + person.getAddress();
-                            items.set(newValue.intValue(), setSurname);
-                        } else if (clickName > 0) {
-                            Person person = pb.getPerson(newValue.intValue());
-                            pb.setPersonData(newValue.intValue(), person.getSurname(), forName.getText(),
-                                    person.getAddress());
-                            String setName = person.getSurname() + " " + forName.getText() + " " +
-                                    person.getAddress();
-                            items.set(newValue.intValue(), setName);
-                        }
-                        pb.close();
-                        listOfPerson.getItems().clear();
-                        forSurname.setText("");
-                        forName.setText("");
-                        forHome.setText("");
-                        forSurname.setDisable(true);
-                        forName.setDisable(true);
-                        forHome.setDisable(true);
-                        edit.setDisable(true);
-                    } else if (result.get() == ButtonType.NO) {
-                        forSurname.setText("");
-                        forName.setText("");
-                        forHome.setText("");
-                        forSurname.setDisable(true);
-                        forName.setDisable(true);
-                        forHome.setDisable(true);
-                        edit.setDisable(true);
-                        pb.close();
-                        listOfPerson.getItems().clear();
-                        if (clickForSurname > 0) {
-                            Person person = pb.getPerson(oldValue.intValue());
-                            pb.setPersonData(oldValue.intValue(), forSurname.getText(), person.getName(),
-                                    person.getAddress());
-                            String setSurname = forSurname.getText() + " " + person.getName() + " "
-                                    + person.getAddress();
-                            items.set(oldValue.intValue(), setSurname);
-                        } else if (clickName > 0) {
-                            Person person = pb.getPerson(oldValue.intValue());
-                            pb.setPersonData(oldValue.intValue(), person.getSurname(), forName.getText(),
-                                    person.getAddress());
-                            String setName = person.getSurname() + " " + forName.getText() + " " +
-                                    person.getAddress();
-                            items.set(oldValue.intValue(), setName);
-                        }
-                        forSurname.setText("");
-                        forName.setText("");
-                        forHome.setText("");
-                        forSurname.setDisable(true);
-                        forName.setDisable(true);
-                        forHome.setDisable(true);
-                        edit.setDisable(true);
-                    } else if (result.get() == ButtonType.CANCEL) {
-
-                    }
-                    clickForSurname = 0;
-                    clickName = 0;
+                    closeOrExit(clickForSurname, clickName, result, pb, listOfPerson, items,
+                            forSurname, forName, forHome, edit, oldValue, newValue);
                 }
             });
 
@@ -364,21 +251,9 @@ public class App extends Application {
                         }
                         pb.close();
                         listOfPerson.getItems().clear();
-                        forSurname.setText("");
-                        forName.setText("");
-                        forHome.setText("");
-                        forSurname.setDisable(true);
-                        forName.setDisable(true);
-                        forHome.setDisable(true);
-                        edit.setDisable(true);
+                        clearSurnameNameAndHome(forSurname, forName, forHome, edit);
                     } else if (result.get() == ButtonType.NO) {
-                        forSurname.setText("");
-                        forName.setText("");
-                        forHome.setText("");
-                        forSurname.setDisable(true);
-                        forName.setDisable(true);
-                        forHome.setDisable(true);
-                        edit.setDisable(true);
+                        clearSurnameNameAndHome(forSurname, forName, forHome, edit);
                         pb.close();
                         listOfPerson.getItems().clear();
                         if (clickForSurname > 0) {
@@ -441,6 +316,66 @@ public class App extends Application {
         stage.setMinWidth(700);
         stage.setMinHeight(350);
         stage.show();
+    }
+
+    private static void clearSurnameNameAndHome(TextField forSurname, TextField forName, TextArea forHome,
+            Button edit) {
+        forSurname.setText("");
+        forName.setText("");
+        forHome.setText("");
+        forSurname.setDisable(true);
+        forName.setDisable(true);
+        forHome.setDisable(true);
+        edit.setDisable(true);
+    }
+
+    private static void closeOrExit(int clickForSurname, int clickName, Optional<ButtonType> res, PhoneBook pb,
+            ListView<String> listOfPerson, ObservableList<String> items, TextField forSurname, TextField forName,
+            TextArea forHome, Button edit, Number oldValue, Number newValue) {
+
+        if (res.get() == ButtonType.YES) {
+            if (clickForSurname > 0) {
+                Person person = pb.getPerson(newValue.intValue());
+                pb.setPersonData(newValue.intValue(), forSurname.getText(), person.getName(),
+                        person.getAddress());
+                String setSurname = forSurname.getText() + " " + person.getName() + " "
+                        + person.getAddress();
+                items.set(newValue.intValue(), setSurname);
+            } else if (clickName > 0) {
+                Person person = pb.getPerson(newValue.intValue());
+                pb.setPersonData(newValue.intValue(), person.getSurname(), forName.getText(),
+                        person.getAddress());
+                String setName = person.getSurname() + " " + forName.getText() + " " +
+                        person.getAddress();
+                items.set(newValue.intValue(), setName);
+            }
+            pb.close();
+            listOfPerson.getItems().clear();
+            clearSurnameNameAndHome(forSurname, forName, forHome, edit);
+        } else if (res.get() == ButtonType.NO) {
+            clearSurnameNameAndHome(forSurname, forName, forHome, edit);
+            pb.close();
+            listOfPerson.getItems().clear();
+            if (clickForSurname > 0) {
+                Person person = pb.getPerson(oldValue.intValue());
+                pb.setPersonData(oldValue.intValue(), forSurname.getText(), person.getName(),
+                        person.getAddress());
+                String setSurname = forSurname.getText() + " " + person.getName() + " "
+                        + person.getAddress();
+                items.set(oldValue.intValue(), setSurname);
+            } else if (clickName > 0) {
+                Person person = pb.getPerson(oldValue.intValue());
+                pb.setPersonData(oldValue.intValue(), person.getSurname(), forName.getText(),
+                        person.getAddress());
+                String setName = person.getSurname() + " " + forName.getText() + " " +
+                        person.getAddress();
+                items.set(oldValue.intValue(), setName);
+            }
+        } else if (res.get() == ButtonType.CANCEL) {
+
+        }
+        clickForSurname = 0;
+        clickName = 0;
     }
 
     public static void main(String[] args) {
