@@ -415,6 +415,26 @@ public class App extends Application {
 
         openMenuItem.setDisable(true);
 
+        edit.setOnAction(event -> {
+            AddressDialog dialog = new AddressDialog(stage, forHome.getText());
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                forHome.setText(dialog.formatAddress());
+            } else if (result.get() == ButtonType.CANCEL) {
+
+            }
+        });
+
+        forHome.setOnMouseClicked(event -> {
+            AddressDialog dialog = new AddressDialog(stage, forHome.getText());
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                forHome.setText(dialog.formatAddress());
+            } else if (result.get() == ButtonType.CANCEL) {
+
+            }
+        });
+
         var scene = new Scene(mainPane, 700, 350);
         stage.setTitle("PhoneBook");
         stage.setScene(scene);
