@@ -1,12 +1,17 @@
 package gr.uop;
 
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
@@ -28,7 +33,11 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
+    private PhoneBook pb = new PhoneBook();
+
     private MenuItem openMenuItem, closeMenuItem;
+
+    private int clickForSurname = 0, clickName = 0;
 
     @Override
     public void start(Stage stage) {
@@ -50,6 +59,12 @@ public class App extends Application {
         HBox rightControl = new HBox();
 
         ObservableList<String> items = FXCollections.observableArrayList();
+        for (int i = 0; i < pb.getPersonCount(); i++) {
+            Person person = pb.getPerson(i);
+            String personData = person.getSurname() + " " + person.getName() + " " +
+                    person.getAddress();
+            items.add(personData);
+        }
 
         ListView<String> listOfPerson = new ListView<>(items);
 
@@ -121,6 +136,72 @@ public class App extends Application {
         BorderPane mainPane = new BorderPane();
         mainPane.setTop(menuBar);
         mainPane.setCenter(splitPane);
+
+        forSurname.setDisable(true);
+        forName.setDisable(true);
+        forHome.setDisable(true);
+        edit.setDisable(true);
+
+        listOfPerson.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() != -1) {
+                forSurname.setDisable(false);
+                forName.setDisable(false);
+                forHome.setDisable(false);
+                edit.setDisable(false);
+                if (clickForSurname > 0 || clickName > 0) {
+                    Alert alert = new Alert(AlertType.WARNING);
+
+                    alert.setTitle("Warning");
+                    alert.setContentText("Do you want to save the changes?");
+                    alert.setHeaderText("The current record has changed");
+
+                    alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.YES) {
+                        if (clickForSurname > 0) {
+                            Person person = pb.getPerson(oldValue.intValue());
+                            pb.setPersonData(oldValue.intValue(), forSurname.getText(), person.getName(),
+                                    person.getAddress());
+                            String setSurname = forSurname.getText() + " " + person.getName() + " "
+                                    + person.getAddress();
+                            items.set(oldValue.intValue(), setSurname);
+                        } else if (clickName > 0) {
+                            Person person = pb.getPerson(oldValue.intValue());
+                            pb.setPersonData(oldValue.intValue(), person.getSurname(), forName.getText(),
+                                    person.getAddress());
+                            String setName = person.getSurname() + " " + forName.getText() + " " +
+                                    person.getAddress();
+                            items.set(oldValue.intValue(), setName);
+                        }
+                    } else if (result.get() == ButtonType.NO) {
+
+                    }
+                    clickForSurname = 0;
+                    clickName = 0;
+                }
+                if (clickForSurname == 0 && clickName == 0) {
+                    if (newValue.intValue() >= 0) {
+                        Person person = pb.getPerson(newValue.intValue());
+                        forSurname.setText(person.getSurname());
+                        forName.setText(person.getName());
+                        forHome.setText(person.getAddress());
+                        clickForSurname = 0;
+                        clickName = 0;
+                    }
+                }
+            }
+
+        });
+
+        forSurname.textProperty().addListener((observable, oldValue, newValue) -> {
+            clickForSurname++;
+        });
+
+        forName.textProperty().addListener((observable, oldValue, newValue) -> {
+            clickName++;
+        });
+
+        openMenuItem.setDisable(true);
 
         var scene = new Scene(mainPane, 700, 350);
         stage.setTitle("PhoneBook");
